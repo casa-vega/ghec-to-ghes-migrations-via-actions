@@ -9,7 +9,7 @@ jobs:
     if: contains(github.event.issue.labels.*.name, 'github-enterprise-cloud')
     uses: ./.github/workflows/shared-github-enterprise-cloud-export.yml
     with:
-      runner: ghec-migration
+      runner: ubuntu-latest
       ghes-ssh-host: github.steffenhiller.com
     secrets:
       GHES_ADMIN_USERNAME: ${{ secrets.GHES_ADMIN_USERNAME }}
