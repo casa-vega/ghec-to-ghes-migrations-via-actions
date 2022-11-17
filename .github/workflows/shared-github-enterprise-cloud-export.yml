@@ -60,7 +60,7 @@ jobs:
             const fs = require('fs')
             const parsedIssueBody = require('./.github/scripts/parse-issue-body.js')({context, core})
             console.log(parsedIssueBody.repositories.trim())
-            const test = parsedIssueBody.replace(/https:\/\/github.com\//g,'');
+            const test = parsedIssueBody.repositories.replace(/https:\/\/github.com\//g,'');
             console.log(test.trim())
             
             fs.writeFileSync('repositories.txt', parsedIssueBody.repositories.trim())
