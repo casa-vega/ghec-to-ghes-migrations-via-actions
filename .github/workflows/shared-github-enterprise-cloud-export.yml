@@ -67,6 +67,8 @@ jobs:
         uses: actions/github-script@v5
         with:
           script: |
+            const fs = require('fs')
+            
             const response = github.rest.migrations.startForOrg({
               org: context.repo.owner,
               repositories: fs.readFileSync('org-repositories.txt', 'utf8').split('\n'),
