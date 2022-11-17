@@ -65,6 +65,7 @@ jobs:
       - name: Create GitHub Enterprise Cloud migration archive
         uses: actions/github-script@v5
         with:
+          github-token: ${{ secrets.GHEC_PAT }}
           script: |
             const fs = require('fs')
             
