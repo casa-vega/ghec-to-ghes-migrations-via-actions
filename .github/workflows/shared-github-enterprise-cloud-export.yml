@@ -60,8 +60,7 @@ jobs:
             const fs = require('fs')
             const parsedIssueBody = require('./.github/scripts/parse-issue-body.js')({context, core})
             
-            fs.writeFileSync('repositories.txt', parsedIssueBody.repositories.trim())
-            fs.writeFileSync('org-repositories.txt', parsedIssueBody.repositories.replace(/https:\/\/github.com\//g,''))
+            fs.writeFileSync('repositories.txt', parsedIssueBody.repositories.trim().replace(/https:\/\/github.com\//g,''))
 
       - name: Create GitHub Enterprise Cloud migration archive
         uses: actions/github-script@v5
@@ -71,7 +70,7 @@ jobs:
             
             const response = github.rest.migrations.startForOrg({
               org: context.repo.owner,
-              repositories: fs.readFileSync('org-repositories.txt', 'utf8').split('\n'),
+              repositories: fs.readFileSync('repositories.txt', 'utf8').split('\n'),
             });
 
             console.log(response.data);
