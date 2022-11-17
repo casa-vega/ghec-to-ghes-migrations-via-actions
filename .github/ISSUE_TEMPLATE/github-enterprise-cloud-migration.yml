@@ -14,3 +14,12 @@ body:
         https://github.com/your-org/your-repository-2
     validations:
       required: true
+  - type: dropdown
+    attributes:
+      label: Target repository visibility
+      description: Please select the visibility for the repositories on GitHub Enterprise Server after they have been migrated
+      options:
+        - Private
+        - Internal
+    validations:
+      required: true
