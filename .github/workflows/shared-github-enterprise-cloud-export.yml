@@ -52,3 +52,15 @@ jobs:
               repo: context.repo.repo,
               body
             })
+
+      - name: Parse repositories from issue body and write to file
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const fs = require('fs')
+            const parsedIssueBody = require('./.github/scripts/parse-issue-body.js')({context, core})
+            console.log(parsedIssueBody.repositories.trim())
+            
+            fs.writeFileSync('repositories.txt', parsedIssueBody.repositories.trim())
+
+
