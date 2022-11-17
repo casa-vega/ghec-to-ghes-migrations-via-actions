@@ -11,8 +11,6 @@ on:
         type: string
         required: true
     secrets:
-      GHES_ADMIN_USERNAME:
-        required: true
       GHES_ADMIN_TOKEN:
         required: true
 
@@ -27,10 +25,28 @@ jobs:
 
     env:
       MIGRATION_GUID: ${{ inputs.migration-guid }}
-      GHES_SSH_HOST: ${{ inputs.ghes-ssh-host }}
-      GHES_SSH: ssh -p 122 admin@${{ inputs.ghes-ssh-host }}
-      GHES_SCP: scp -P 122
    
     steps:
       - name: Check out scripts
         uses: actions/checkout@v2
+
+      - name: Set migration type
+        uses: actions/github-script@v5
+        id: migration-type
+        with:
+          result-encoding: string
+          script: |
+            return context.payload.comment.body.match('dry-run') ? 'Dry-run' : 'Production'
+
+      - name: Update issue with running state
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const body = `:hourglass_flowing_sand: Running **${"${{ steps.migration-type.outputs.result }}".toLowerCase()}** migration. [View workflow run for details](${context.payload.repository.html_url}/actions/runs/${context.runId})`
+
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body
+            })
