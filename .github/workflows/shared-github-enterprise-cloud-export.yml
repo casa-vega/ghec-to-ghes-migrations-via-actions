@@ -29,4 +29,8 @@ jobs:
       MIGRATION_GUID: ${{ inputs.migration-guid }}
       GHES_SSH_HOST: ${{ inputs.ghes-ssh-host }}
       GHES_SSH: ssh -p 122 admin@${{ inputs.ghes-ssh-host }}
-      GHES_SCP: scp -P 122 
+      GHES_SCP: scp -P 122
+   
+    steps:
+      - name: Check out scripts
+        uses: actions/checkout@v2
