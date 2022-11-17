@@ -63,7 +63,7 @@ jobs:
             fs.writeFileSync('repositories.txt', parsedIssueBody.repositories.trim().replace(/https:\/\/github.com\//g,''))
 
       - name: Create GitHub Enterprise Cloud migration archive
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GHEC_PAT }}
           script: |
