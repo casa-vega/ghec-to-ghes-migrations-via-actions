@@ -13,6 +13,8 @@ on:
     secrets:
       GHES_ADMIN_TOKEN:
         required: true
+      GHES_ADMIN_USERNAME:
+        required: true
 
 jobs:
   export:
