@@ -61,17 +61,29 @@ jobs:
             const parsedIssueBody = require('./.github/scripts/parse-issue-body.js')({context, core})
             
             fs.writeFileSync('repositories.txt', parsedIssueBody.repositories.trim().replace(/https:\/\/github.com\//g,''))
-
-      - name: Create GitHub Enterprise Cloud migration archive
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{ secrets.GHEC_PAT }}
-          script: |
-            const fs = require('fs')
             
-            const response = github.rest.migrations.startForOrg({
-              org: context.repo.owner,
-              repositories: fs.readFileSync('repositories.txt', 'utf8').split('\n'),
-            });
+      - name: Update issue with archive state
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const body = `:hourglass_flowing_sand: Creating **${"${{ steps.migration-type.outputs.result }}".toLowerCase()}** Archive. [View workflow run for details](${context.payload.repository.html_url}/actions/runs/${context.runId})`
 
-            console.log(response.data);
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body
+            })           
+      
+      - name: Update issue with archive download
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const body = `:hourglass_flowing_sand: Archive created **${"${{ steps.migration-type.outputs.result }}".toLowerCase()}**, downloading. [View workflow run for details](${context.payload.repository.html_url}/actions/runs/${context.runId})`
+
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body
+            }) 
